@@ -21,7 +21,6 @@ public class Example {
      */
     public void set(Object o, int index) {
         example[index] = o;
-        return;
     }
 
     /**
@@ -36,7 +35,7 @@ public class Example {
     /**
      * Scambia due oggetti di tipo example
      * @param e oggetto da scambiare con quello che richiama questo metodo
-     * @throws ExampleSizeException
+     * @throws ExampleSizeException Viene lanciata se i due Example sono di dimensione diversa
      */
     void swap(Example e) throws ExampleSizeException{
         if(e.example.length!=this.example.length)
@@ -59,8 +58,7 @@ public class Example {
         double value = 0.0;
         if(e.example.length==this.example.length && e.example.length!=0 && this.example.length!=0){
             for(int i=0; i<e.example.length; i++){
-                if(e.get(i).equals(this.get(i)));
-                else
+                if(!e.get(i).equals(this.get(i)))
                     value++;
             }
         }

@@ -150,7 +150,7 @@ public class Data {
      * @param inf punto di partenza della partizione
      * @param sup punto di fine della partizione
      * @return punto di separazione
-     * @throws ExampleSizeException
+     * @throws ExampleSizeException lanciata dallo swap
      */
     private int partition(double[] key, int inf, int sup)throws ExampleSizeException {
         int i, j;
@@ -298,8 +298,8 @@ public class Data {
 
     /**
      * Prova a inserire un elemento (value) in un array ordinato(crescente) se c'è posto
-     * @param value
-     * @param array
+     * @param value Valore da provare a inserire in array
+     * @param array Array in cui provare ad inserire la distanza
      */
     void inserisciDistanza(double value, double[] array) {
         boolean trovato = false;
