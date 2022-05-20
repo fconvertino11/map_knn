@@ -13,8 +13,7 @@ public class MainTest {
 	 **/
 	public static void main(String[] args) throws FileNotFoundException{
 		try {
-			Data trainingSet= new Data("simple.dat");
-			System.out.println(trainingSet);
+			Data trainingSet= new Data("knn_map/src/simple.dat");
 			
 			KNN knn=new KNN(trainingSet);
 			

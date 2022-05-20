@@ -39,7 +39,7 @@ public class Data {
      *                               training set
      */
     public Data(String fileName) throws FileNotFoundException,TrainingDataException{
-        File inFile = new File("knn_map/src/simple.dat");
+        File inFile = new File(fileName);
         Scanner sc = new Scanner(inFile);
         String line = sc.nextLine();
         if (!line.contains("@schema"))
