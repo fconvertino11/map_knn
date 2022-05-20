@@ -122,7 +122,7 @@ public class Data {
      */
     public static void main(String[] args) throws FileNotFoundException {
         try{
-        Data trainingSet = new Data("servo.dat");
+        Data trainingSet = new Data("simple.dat");
             System.out.println(trainingSet);}
         catch(TrainingDataException e){
             System.out.println("Il programma verrà ora terminato");
@@ -280,7 +280,6 @@ public class Data {
         for (int i = 0; i < array.length; i++)
             array[i] = -1.0;
     }
-
     /**
      * Verifica che un elemento (value) sia presente in un array di double
      */
