@@ -12,9 +12,8 @@ public class MainTest {
 	 * @param args
 	 **/
 	public static void main(String[] args) throws FileNotFoundException{
-
 		try {
-			Data trainingSet= new Data("./src/data/simple.dat");
+			Data trainingSet= new Data("simple.dat");
 			System.out.println(trainingSet);
 			
 			KNN knn=new KNN(trainingSet);

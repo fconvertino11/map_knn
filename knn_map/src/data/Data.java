@@ -1,6 +1,7 @@
 package data;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /**
@@ -38,7 +39,7 @@ public class Data {
      *                               training set
      */
     public Data(String fileName) throws FileNotFoundException,TrainingDataException{
-        File inFile = new File(fileName);
+        File inFile = new File("knn_map/src/simple.dat");
         Scanner sc = new Scanner(inFile);
         String line = sc.nextLine();
         if (!line.contains("@schema"))
@@ -277,8 +278,7 @@ public class Data {
      * @param array Array da inizializzare a -1.0
      */
     private void inizializzaValoriNegativi(double[] array) {
-        for (int i = 0; i < array.length; i++)
-            array[i] = -1.0;
+        Arrays.fill(array, -1.0);
     }
     /**
      * Verifica che un elemento (value) sia presente in un array di double
