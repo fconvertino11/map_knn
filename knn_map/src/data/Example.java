@@ -1,17 +1,19 @@
 package data;
 
+import java.util.ArrayList;
+
 /**
  * Classe che contiene una serie di attributi continui e/o discreti
  */
 public class Example {
-    Object[] example;
+    ArrayList<Object> example;
 
     /**
      * Costruttore di classe
      * @param size Numero di attributi
      */
     public Example(int size) {
-        example = new Object[size];
+        example = new ArrayList<Object>(size);
     }
 
     /**
@@ -20,7 +22,7 @@ public class Example {
      * @param index posizione di example in cui scrivere "o"
      */
     public void set(Object o, int index) {
-        example[index] = o;
+        example.set(index, o);
     }
 
     /**
@@ -29,7 +31,7 @@ public class Example {
      * @return il valore letto
      */
     Object get(int index) {
-        return example[index];
+        return example.get(index);
     }
 
     /**
@@ -38,9 +40,10 @@ public class Example {
      * @throws ExampleSizeException Viene lanciata se i due Example sono di dimensione diversa
      */
     void swap(Example e) throws ExampleSizeException{
-        if(e.example.length!=this.example.length)
+        if(e.length()!=this.length())
             throw new ExampleSizeException("Non posso scambiare i due array di attributi perché di dimensione diversa");
         Example tmp = new Example(0);
+
         tmp.example = e.example;
         e.example = this.example;
         this.example = tmp.example;
@@ -54,16 +57,21 @@ public class Example {
      *                              lunghezze diverse o uno dei due è di
      *                              lunghezza 0
      */
-    double distance(Example e)throws ExampleSizeException {
+    double distance (Example e) throws ExampleSizeException {
         double value = 0.0;
-        if(e.example.length==this.example.length && e.example.length!=0 && this.example.length!=0){
-            for(int i=0; i<e.example.length; i++){
-                if(!e.get(i).equals(this.get(i)))
+        if (e.length() == this.length() && e.length() != 0 && this.length() != 0) {
+            for (int i = 0; i < e.length(); i++) {
+                if (!e.get(i).equals(this.get(i))) {
                     value++;
+                }
             }
-        }
-        else
+        } else {
             throw new ExampleSizeException("I due oggetti confrontati sono di lunghezza diversa");
+        }
         return value;
+    }
+
+    int length(){
+        return example.size();
     }
 }

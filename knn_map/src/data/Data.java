@@ -1,6 +1,7 @@
 package data;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -11,12 +12,12 @@ public class Data {
     /**
      * Array di oggetti istanza della classe Example.
      */
-    Example[] data;
+    ArrayList<Example> data;
     /**
      * Array di valori della variabile target, un valore per ogni esempio (istanza
      * di Example) memorizzato in data.
      */
-    Double[] target;
+    ArrayList<Double> target;
     /**
      * Numero di esempi memorizzato in data.
      */
@@ -25,7 +26,7 @@ public class Data {
      * Array delle variabili indipendenti che definiscono lo schema degli oggetti
      * istanza di Example.
      */
-    Attribute[] explanatorySet;
+    ArrayList<Attribute> explanatorySet;
     /**
      * Attributo target.
      */
@@ -42,22 +43,21 @@ public class Data {
         File inFile = new File(fileName);
         Scanner sc = new Scanner(inFile);
         String line = sc.nextLine();
-        if (!line.contains("@schema"))
+        if (!line.contains("@schema")) //Mi assicuro che il file inizi con "@schema"
             throw new TrainingDataException("Errore nel training set fornito, non è uno schema");
+         //Divido la prima riga in parola
+        // la prima sarà "@schema" e la seconda il numero di attributi
         String[] s = line.split(" ");
 
         // popolare explanatory Set
-        boolean targetPresente=false;
-        boolean trovatoDiscreto=false;
-        int attributiTrovati=0;
-        Attribute[] explanatorySet;
-        {
-            int explanatorySetSize = Integer.parseInt(s[1]);
-            if (explanatorySetSize < 0)
-                throw new TrainingDataException("Errore critico:Questo data set prevede un numero negativo di attributi");
-            explanatorySet = new Attribute[explanatorySetSize];
-        }
-        if(explanatorySet.length==0)
+        boolean targetPresente = false;     //Controllo eccezioni
+        boolean trovatoDiscreto = false;    //Controllo eccezioni
+        int attributiTrovati = 0;           //Controllo eccezioni
+        int explanatorySetSize = Integer.parseInt(s[1]);
+        if (explanatorySetSize < 0)
+            throw new TrainingDataException("Errore critico:Questo data set prevede un numero negativo di attributi");
+        explanatorySet = new ArrayList<Attribute>(explanatorySetSize);
+        if(getExpSetSize()==0)
             throw new TrainingDataException("Errore critico:Questo data set non prevede alcun attributo");
 
         short iAttribute = 0;
@@ -69,9 +69,9 @@ public class Data {
                 // @desc motor discrete
                 trovatoDiscreto=true;
                 attributiTrovati++;
-                if(attributiTrovati>explanatorySet.length)
+                if(attributiTrovati>getExpSetSize())
                     throw new TrainingDataException("Errore critico:Questo data set descrive più attributi di quanti ne siano previsti");
-                explanatorySet[iAttribute] = new DiscreteAttribute(s[1], iAttribute);
+                explanatorySet.set(iAttribute, new DiscreteAttribute(s[1], iAttribute));
             } else if (s[0].equals("@target")) {
                 targetPresente=true;
                 classAttribute = new ContinuousAttribute(s[1], iAttribute);
@@ -85,7 +85,7 @@ public class Data {
             throw new TrainingDataException("Errore critico:Non è presente un attributo target");
         if(!trovatoDiscreto && true)//TODO sostituire true con trovatoContinuo
             throw new TrainingDataException("Errore critico:Non è presente alcun attributo oltre l'attributo target");
-        if(attributiTrovati<explanatorySet.length)
+        if(attributiTrovati<getExpSetSize())
             throw new TrainingDataException("Errore critico:Questo data set descrive meno attributi di quanti ne siano previsti");
 
         // avvalorare numero di esempi
@@ -93,12 +93,12 @@ public class Data {
         if(numberOfExamples==0)
             throw new TrainingDataException("Training set vuoto");
         // popolare data e target
-        data = new Example[numberOfExamples];
-        target = new Double[numberOfExamples];
+        data = new ArrayList<Example>(numberOfExamples);
+        target = new ArrayList<Double>(numberOfExamples);
 
         short iRow = 0;
         while (sc.hasNextLine()) {
-            Example e = new Example(explanatorySet.length);
+            Example e = new Example(getExpSetSize());
             line = sc.nextLine();
             // assumo che attributi siano tutti discreti
             s = line.split(","); // E,E,5,4, 0.28125095
@@ -106,8 +106,8 @@ public class Data {
                 e.set(s[jColumn], jColumn);
             if(iRow==numberOfExamples)
                 throw new TrainingDataException("Sono stati dichiarati meno dati di quanti ce ne siano");
-            data[iRow] = e;
-            target[iRow] = Double.valueOf(s[s.length - 1]);
+            data.set(iRow, e);
+            target.set(iRow, Double.valueOf(s[s.length - 1]));
             iRow++;
 
         }
@@ -136,14 +136,9 @@ public class Data {
      * Restituisce la lunghezza dell'array explanatorySet[]
      * @return Restituisce la lunghezza calcolata
      */
-    public int getNumberOfExplanatoryAttributes() {
-        return explanatorySet.length;
+    public int getExpSetSize() {
+        return explanatorySet.size();
     }
-
-    /*
-     * Partiziona data rispetto all'elemento x di key e restituisce il punto di
-     * separazione
-     */
 
     /**
      * Partiziona data rispetto all'elemento x di key e restituisce il punto di separazione
@@ -162,11 +157,11 @@ public class Data {
 
         double x = key[med];
 
-        data[inf].swap(data[med]);
+        data.get(inf).swap(data.get(med));
 
-        double temp = target[inf];
-        target[inf] = target[med];
-        target[med] = temp;
+        double temp = target.get(inf);
+        target.set(inf, target.get(med));
+        target.set(med, temp);
 
         temp = key[inf];
         key[inf] = key[med];
@@ -184,10 +179,10 @@ public class Data {
             }
 
             if (i < j) {
-                data[i].swap(data[j]);
-                temp = target[i];
-                target[i] = target[j];
-                target[j] = temp;
+                data.get(i).swap(data.get(j));
+                temp = target.get(i);
+                target.set(i, target.get(j));
+                target.set(j, temp);
 
                 temp = key[i];
                 key[i] = key[j];
@@ -196,11 +191,11 @@ public class Data {
             } else
                 break;
         }
-        data[inf].swap(data[j]);
+        data.get(inf).swap(data.get(j));
 
-        temp = target[inf];
-        target[inf] = target[j];
-        target[j] = temp;
+        temp = target.get(inf);
+        target.set(inf, target.get(j));
+        target.set(j, temp);
 
         temp = key[inf];
         key[inf] = key[j];
@@ -249,7 +244,7 @@ public class Data {
         double value;
         double[] key = new double[numberOfExamples];
         for (int i = 0; i < numberOfExamples; i++) {    //(1) Avvaloro key[]
-            key[i] = e.distance(data[i]);
+            key[i] = e.distance(data.get(i));
         }
         quicksort(key, 0, key.length - 1);    //(2) ordino key[], data[] e target[] in accordo con key[]
         double[] minDistances = new double[k];
@@ -265,7 +260,7 @@ public class Data {
         for (int i = 0; i < key.length; i++) {
             if (!nonPresente(key[i], minDistances)) {//Controllo se il valore fa parte di quelli che mi interessano
                 counter++;                    //In tal caso aumento il contatore e aggiungo alla somma
-                somma += target[i];
+                somma += target.get(i);
             }
         }
         if (counter <= 0)
