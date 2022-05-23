@@ -6,21 +6,45 @@ import data.ExampleSizeException;
 import data.TrainingDataException;
 import utility.Keyboard;
 
+/**
+ * Questa classe si occupa di acquisire il data set
+ * tramite la classe Data e richiama il metodo che
+ * effettivamente fa la previsione su di esso
+ */
 public class KNN {
-    //Modella il miner
-    //Attributi
-    //Modella il training set
+    /**
+     * Attributo che contiene il training set
+     */
      final Data data;
-    //Metodi
-    //Avvalora il training set
+
+    /**
+     * Costruttore di classe
+     * @param trainingSet È il training set su cui operare
+     */
     public KNN(Data trainingSet){
         data=trainingSet;
     }
-    //Predice il valore target dell’esempio passato come parametro (fare uso di avgClosest )
+
+    /**
+     * Predice il valore target dell’esempio passato come parametro ( fare uso di avgClosest )
+     * @param e Dati su cui effettuare la previsione
+     * @param k Accuratezza del knn da applicare
+     * @return Ritorna il valore calcolato
+     * @throws ExampleSizeException è lanciata quando si prova
+     *                              a operare con dati di dimensione diversa
+     * @throws TrainingDataException è lanciata quando il Training set contiene dati non validi
+     */
     public Double predict(Example e, int k) throws ExampleSizeException, TrainingDataException {
         return data.avgClosest(e,k);
     }
 
+    /**
+     * Predice il valore target dell’esempio letto da tastiera
+     * @return Ritorna il valore calcolato
+     * @throws ExampleSizeException è lanciata quando si prova
+     *                              a operare con dati di dimensione diversa
+     * @throws TrainingDataException è lanciata quando il Training set contiene dati non validi
+     */
     public Double predict() throws ExampleSizeException, TrainingDataException {
         Example e=readExample();
         boolean valid=false;
@@ -33,6 +57,11 @@ public class KNN {
         }while(!valid);
         return predict(e,k);
     }
+
+    /**
+     * Legge una serie di attributi da tastiera
+     * @return Ritorna un oggetto di tipo Example contenente i dati letti
+     */
     public Example readExample(){
         Example e=new Example(0);
         System.out.println("Quanti attributi conterrà la predizione?");

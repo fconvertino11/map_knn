@@ -6,6 +6,9 @@ import java.util.ArrayList;
  * Classe che contiene una serie di attributi continui e/o discreti
  */
 public class Example {
+    /**
+     * Array contenente i dati degli attributi
+     */
     ArrayList<Object> example;
 
     /**

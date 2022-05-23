@@ -38,7 +38,7 @@ public class Data {
      * @throws TrainingDataException può essere lanciata a causa di problemi vari del
      *                               training set
      */
-    public Data(String fileName) throws FileNotFoundException,TrainingDataException{
+    public Data(String fileName) throws FileNotFoundException,TrainingDataException {
         File inFile = new File(fileName);
         Scanner sc = new Scanner(inFile);
         String line = sc.nextLine();
