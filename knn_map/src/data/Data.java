@@ -69,14 +69,13 @@ public class Data {
             s = line.split(" ");    //leggo il tipo di attributo (@desc/@target)
             if (s[0].equals("@desc")) {   // aggiungo l'attributo allo spazio descrittivo
                 // @desc motor discrete
-                trovatoDiscreto = true;
-                attributiTrovati++;
-                System.out.println("Gli attributi trovati sono " + attributiTrovati + "mentre la dimensione dell' expSet è " + explanatorySetSize);
+                trovatoDiscreto = true; //Gestione eccezioni
+                attributiTrovati++;     //Gestione eccezioni
                 if(attributiTrovati > explanatorySetSize)
                     throw new TrainingDataException("Errore critico:Questo data set descrive più attributi di quanti ne siano previsti");
-                explanatorySet.add(new DiscreteAttribute(s[1], iAttribute));
+                explanatorySet.add(new DiscreteAttribute(s[1], iAttribute));    //Aggiungo l'attributo all'explanatory set
             } else if (s[0].equals("@target")) {
-                targetPresente = true;
+                targetPresente = true;  //Gestione eccezioni
                 classAttribute = new ContinuousAttribute(s[1], iAttribute);
             } else
                 throw new TrainingDataException("Errore critico:Attributo n.ro " + (iAttribute+1) + " di tipo non valido");
@@ -86,7 +85,7 @@ public class Data {
         }
         if(!targetPresente)
             throw new TrainingDataException("Errore critico:Non è presente un attributo target");
-        if(!trovatoDiscreto && true)//TODO sostituire true con trovatoContinuo
+        if(!trovatoDiscreto && true)//TODO sostituire true con trovatoContinuo (da inserire)
             throw new TrainingDataException("Errore critico:Non è presente alcun attributo oltre l'attributo target");
         if(attributiTrovati<getExpSetSize())
             throw new TrainingDataException("Errore critico:Questo data set descrive meno attributi di quanti ne siano previsti");
@@ -140,7 +139,6 @@ public class Data {
      * @return Restituisce la lunghezza calcolata
      */
     public int getExpSetSize() {
-        test(String.valueOf(explanatorySet.size()));
         return explanatorySet.size();
     }
 

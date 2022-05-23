@@ -22,8 +22,14 @@ public class KNN {
 
     public Double predict() throws ExampleSizeException{
         Example e=readExample();
-        System.out.println("Con che accuratezza vuoi che venga eseguito l'algoritmo? (inserisci intero)");
-        int k=Keyboard.readInt();
+        boolean valid=false;
+        int k;
+        do{
+            System.out.println("Con che accuratezza vuoi che venga eseguito l'algoritmo? (inserisci intero)");
+            k = Keyboard.readInt();
+            if (k > 0)
+                valid = true;
+        }while(!valid);
         return data.avgClosest(e,k);
     }
     public Example readExample(){
