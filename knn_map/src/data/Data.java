@@ -92,8 +92,8 @@ public class Data {
         if(numberOfExamples==0)
             throw new TrainingDataException("Training set vuoto");
         // popolare data e target
-        data = new ArrayList<Example>(0);
-        target = new ArrayList<Double>(0);
+        data = new ArrayList<>(0);
+        target = new ArrayList<>(0);
         short iRow = 0;
         while (sc.hasNextLine()) {
             Example e = new Example(0);
