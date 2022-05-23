@@ -30,7 +30,7 @@ public class KNN {
             if (k > 0)
                 valid = true;
         }while(!valid);
-        return data.avgClosest(e,k);
+        return predict(e,k);
     }
     public Example readExample(){
         Example e=new Example(0);
