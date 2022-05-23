@@ -24,6 +24,12 @@ public class Example {
     public void set(Object o, int index) {
         example.set(index, o);
     }
+
+    /**
+     * Aggiunge un nuovo elemento all'array
+     * @param o elemento da aggiungere
+     * @param index posizione in cui aggiungerlo
+     */
     public void add(Object o, int index) {
         example.add(index, o);
     }

@@ -4,9 +4,6 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
-
-import static data.Test.*;
-
 /**
  * Classe che si occupa della gestione e delle operazioni sui dati.
  */
@@ -242,7 +239,7 @@ public class Data {
      * @return il valore calcolato
      * @throws ExampleSizeException lanciata da distance()
      */
-    public double avgClosest(Example e, int k) throws ExampleSizeException{
+    public double avgClosest(Example e, int k) throws ExampleSizeException, TrainingDataException {
         double value;
         double[] key = new double[numberOfExamples];
         for (int i = 0; i < numberOfExamples; i++) {    //(1) Avvaloro key[]
@@ -266,7 +263,7 @@ public class Data {
             }
         }
         if (counter <= 0)
-            value = -1;                        //Se il contatore vale zero o meno vuol dire che c'è stato qualche errore/manomissione
+            throw new TrainingDataException("Per qualche ragione sono stati individuati 0 elementi validi");                       //Se il contatore vale zero o meno vuol dire che c'è stato qualche errore/manomissione
             value = somma / counter;            //calcolo il valore medio
         return value;
     }
@@ -315,12 +312,4 @@ public class Data {
         }
     }
 
-    /**
-     * Metodo usato per testing, mostra il contenuto di un array
-     * @param array Array da anallizzare
-     */
-    void printArrayOfDouble(double[] array) {
-        for (double v : array)
-            System.out.println(v);
-    }
 }

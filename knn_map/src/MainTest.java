@@ -9,9 +9,10 @@ import java.io.FileNotFoundException;
 public class MainTest {
 
 	/**
-	 * @param args
+	 * Classe main in cui effettuare il testing
+	 * @param args Eventuali argomenti che il metodo prende in input
 	 **/
-	public static void main(String[] args) throws FileNotFoundException{
+	public static void main(String[] args){
 		try {
 			Data trainingSet= new Data("knn_map/src/simple.dat");
 			
@@ -50,14 +51,11 @@ public class MainTest {
 
 
 		}
-		catch(TrainingDataException exc){
+		catch(TrainingDataException | ExampleSizeException exc){
 			System.out.println(exc.getMessage());
 		}
 		catch(FileNotFoundException f){
 			System.out.println("File non trovato");
-		}
-		catch (ExampleSizeException exc) {
-			System.out.println(exc.getMessage());
 		}
 	}
 

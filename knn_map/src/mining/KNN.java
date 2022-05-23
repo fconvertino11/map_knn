@@ -3,6 +3,7 @@ package mining;
 import data.Data;
 import data.Example;
 import data.ExampleSizeException;
+import data.TrainingDataException;
 import utility.Keyboard;
 
 public class KNN {
@@ -16,11 +17,11 @@ public class KNN {
         data=trainingSet;
     }
     //Predice il valore target dell’esempio passato come parametro (fare uso di avgClosest )
-    public Double predict(Example e, int k)throws ExampleSizeException {
+    public Double predict(Example e, int k) throws ExampleSizeException, TrainingDataException {
         return data.avgClosest(e,k);
     }
 
-    public Double predict() throws ExampleSizeException{
+    public Double predict() throws ExampleSizeException, TrainingDataException {
         Example e=readExample();
         boolean valid=false;
         int k;
