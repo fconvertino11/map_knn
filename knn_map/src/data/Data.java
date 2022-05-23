@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
+import static data.Test.*;
+
 /**
  * Classe che si occupa della gestione e delle operazioni sui dati.
  */
@@ -53,27 +55,28 @@ public class Data {
         boolean targetPresente = false;     //Controllo eccezioni
         boolean trovatoDiscreto = false;    //Controllo eccezioni
         int attributiTrovati = 0;           //Controllo eccezioni
-        int explanatorySetSize = Integer.parseInt(s[1]);
-        if (explanatorySetSize < 0)
+        final int explanatorySetSize = Integer.parseInt(s[1]);  //la seconda parola sarà il numero di attributi
+        if (explanatorySetSize < 0) //se il numero è negativo lancio un'eccezione, deve essere maggiore di zero
             throw new TrainingDataException("Errore critico:Questo data set prevede un numero negativo di attributi");
-        explanatorySet = new ArrayList<Attribute>(explanatorySetSize);
-        if(getExpSetSize()==0)
+        explanatorySet = new ArrayList<>(explanatorySetSize);
+        if(explanatorySetSize==0)   //se il numero è zero lancio un eccezione, il dataset non può essere vuoto
             throw new TrainingDataException("Errore critico:Questo data set non prevede alcun attributo");
 
+        //Leggo i tipi di attributi
         short iAttribute = 0;
-        line = sc.nextLine();
+        line = sc.nextLine(); //Leggo la prossima riga
         while (!line.contains("@data")) {
-
-            s = line.split(" ");
-            if (s[0].equals("@desc")) { // aggiungo l'attributo allo spazio descrittivo
+            s = line.split(" ");    //leggo il tipo di attributo (@desc/@target)
+            if (s[0].equals("@desc")) {   // aggiungo l'attributo allo spazio descrittivo
                 // @desc motor discrete
-                trovatoDiscreto=true;
+                trovatoDiscreto = true;
                 attributiTrovati++;
-                if(attributiTrovati>getExpSetSize())
+                System.out.println("Gli attributi trovati sono " + attributiTrovati + "mentre la dimensione dell' expSet è " + explanatorySetSize);
+                if(attributiTrovati > explanatorySetSize)
                     throw new TrainingDataException("Errore critico:Questo data set descrive più attributi di quanti ne siano previsti");
-                explanatorySet.set(iAttribute, new DiscreteAttribute(s[1], iAttribute));
+                explanatorySet.add(new DiscreteAttribute(s[1], iAttribute));
             } else if (s[0].equals("@target")) {
-                targetPresente=true;
+                targetPresente = true;
                 classAttribute = new ContinuousAttribute(s[1], iAttribute);
             } else
                 throw new TrainingDataException("Errore critico:Attributo n.ro " + (iAttribute+1) + " di tipo non valido");
@@ -93,27 +96,27 @@ public class Data {
         if(numberOfExamples==0)
             throw new TrainingDataException("Training set vuoto");
         // popolare data e target
-        data = new ArrayList<Example>(numberOfExamples);
-        target = new ArrayList<Double>(numberOfExamples);
-
+        data = new ArrayList<Example>(0);
+        target = new ArrayList<Double>(0);
         short iRow = 0;
         while (sc.hasNextLine()) {
-            Example e = new Example(getExpSetSize());
+            Example e = new Example(0);
             line = sc.nextLine();
             // assumo che attributi siano tutti discreti
             s = line.split(","); // E,E,5,4, 0.28125095
-            for (short jColumn = 0; jColumn < s.length - 1; jColumn++)
-                e.set(s[jColumn], jColumn);
+            for (short jColumn = 0; jColumn < s.length - 1; jColumn++) {
+                e.add(s[jColumn], jColumn);
+            }
             if(iRow==numberOfExamples)
                 throw new TrainingDataException("Sono stati dichiarati meno dati di quanti ce ne siano");
-            data.set(iRow, e);
-            target.set(iRow, Double.valueOf(s[s.length - 1]));
+            data.add(e);
+            target.add(Double.valueOf(s[s.length - 1]));
             iRow++;
-
         }
         if(iRow!=numberOfExamples)
             throw new TrainingDataException("Sono stati dichiarati più dati di quanti ce ne sono");
         sc.close();
+
     }
 
     /**
@@ -137,6 +140,7 @@ public class Data {
      * @return Restituisce la lunghezza calcolata
      */
     public int getExpSetSize() {
+        test(String.valueOf(explanatorySet.size()));
         return explanatorySet.size();
     }
 

@@ -13,7 +13,7 @@ public class Example {
      * @param size Numero di attributi
      */
     public Example(int size) {
-        example = new ArrayList<Object>(size);
+        example = new ArrayList<>(size);
     }
 
     /**
@@ -24,7 +24,9 @@ public class Example {
     public void set(Object o, int index) {
         example.set(index, o);
     }
-
+    public void add(Object o, int index) {
+        example.add(index, o);
+    }
     /**
      * Getter di un oggetto dell'attributo example
      * @param index posizione di example in cui leggere l'oggetto

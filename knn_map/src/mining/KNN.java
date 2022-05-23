@@ -27,14 +27,13 @@ public class KNN {
         return data.avgClosest(e,k);
     }
     public Example readExample(){
-        Example e;
+        Example e=new Example(0);
         System.out.println("Quanti attributi conterrà la predizione?");
         int predictionSize= Keyboard.readInt();
-        e=new Example(predictionSize);
         for(int i=0; i<predictionSize;i++){
             System.out.println("Inserisci i dati relativi all'attributo numero "+ (i+1));
             System.out.println(" Nome: ");
-            e.set(Keyboard.readString(),i);
+            e.add(Keyboard.readString(),i);
         }
         return e;
     }

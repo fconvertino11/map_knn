@@ -17,9 +17,9 @@ public class MainTest {
 			
 			KNN knn=new KNN(trainingSet);
 			
-			Example e=new Example(2);
-			e.set("A",0);
-			e.set("B",1);
+			Example e=new Example(0);
+			e.add("A",0);
+			e.add("B",1);
 			try{System.out.println("Prediction with K=1:"+knn.predict(e, 1));
 			} 
 			catch (ExampleSizeException exc) {System.out.println(exc.getMessage());		}
@@ -36,15 +36,15 @@ public class MainTest {
 			} 
 			catch (ExampleSizeException exc) {System.out.println(exc.getMessage());		}
 
-			e=new Example(2);
-			e.set("A",0);
-			e.set("B",1);
+			e=new Example(0);
+			e.add("A",0);
+			e.add("B",1);
 
-			System.out.println("Prediction with K=1:"+knn.predict(e, 2));
+			System.out.println("Prediction with K=1:" + knn.predict(e, 2));
 
 
 			// read example withKeyboard
-			try{System.out.println("Prediction with K=4:"+knn.predict());
+			try{System.out.println("Custom prediction:" + knn.predict());
 			}
 			catch (ExampleSizeException exc) {System.out.println(exc.getMessage());		}
 
