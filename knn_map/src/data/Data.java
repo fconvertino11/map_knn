@@ -147,14 +147,14 @@ public class Data {
      * @return punto di separazione
      * @throws ExampleSizeException lanciata dallo swap
      */
-    private int partition(double[] key, int inf, int sup)throws ExampleSizeException {
+    private int partition(ArrayList<Double> key, int inf, int sup)throws ExampleSizeException {
         int i, j;
 
         i = inf;
         j = sup;
         int med = (inf + sup) / 2;
 
-        double x = key[med];
+        double x = key.get(med);
 
         data.get(inf).swap(data.get(med));
 
@@ -162,18 +162,18 @@ public class Data {
         target.set(inf, target.get(med));
         target.set(med, temp);
 
-        temp = key[inf];
-        key[inf] = key[med];
-        key[med] = temp;
+        temp = key.get(inf);
+        key.set(inf, key.get(med));
+        key.set(med, temp);
 
         while (true) {
 
-            while (i <= sup && key[i] <= x) {
+            while (i <= sup && key.get(i) <= x) {
                 i++;
 
             }
 
-            while (key[j] > x) {
+            while (key.get(j) > x) {
                 j--;
             }
 
@@ -183,9 +183,9 @@ public class Data {
                 target.set(i, target.get(j));
                 target.set(j, temp);
 
-                temp = key[i];
-                key[i] = key[j];
-                key[j] = temp;
+                temp = key.get(i);
+                key.set(i, key.get(j));
+                key.set(j, temp);
 
             } else
                 break;
@@ -196,9 +196,9 @@ public class Data {
         target.set(inf, target.get(j));
         target.set(j, temp);
 
-        temp = key[inf];
-        key[inf] = key[j];
-        key[j] = temp;
+        temp = key.get(inf);
+        key.set(inf, key.get(j));
+        key.set(j, temp);
 
         return j;
 
@@ -212,7 +212,7 @@ public class Data {
      * @param sup posizione finale
      * @throws ExampleSizeException lanciata dallo swap() di example
      */
-    private void quicksort(double[] key, int inf, int sup) throws ExampleSizeException{
+    private void quicksort(ArrayList<Double> key, int inf, int sup) throws ExampleSizeException{
 
         if (sup >= inf) {
 
@@ -241,23 +241,24 @@ public class Data {
      */
     public double avgClosest(Example e, int k) throws ExampleSizeException, TrainingDataException {
         double value;
-        double[] key = new double[numberOfExamples];
+        ArrayList<Double> key = new ArrayList<Double>(numberOfExamples);
+
         for (int i = 0; i < numberOfExamples; i++) {    //(1) Avvaloro key[]
-            key[i] = e.distance(data.get(i));
+            key.add(i, e.distance(data.get(i)));
         }
-        quicksort(key, 0, key.length - 1);    //(2) ordino key[], data[] e target[] in accordo con key[]
+        quicksort(key, 0, key.size() - 1);    //(2) ordino key[], data[] e target[] in accordo con key[]
         double[] minDistances = new double[k];
         inizializzaValoriNegativi(minDistances);    //Ci metto -1 in ogni posizione per inizializzare i valori
         for (int i = 0; i < numberOfExamples; i++) {
-            if (nonPresente(key[i], minDistances)) {
-                inserisciDistanza(key[i], minDistances);//se key[i] non è presente provo ad inserirlo
+            if (nonPresente(key.get(i), minDistances)) {
+                inserisciDistanza(key.get(i), minDistances);//se key[i] non è presente provo ad inserirlo
             }
             //Identifico le k distanze minori
         }
         int counter = 0;//inizializzo a zero il contatore e la somma
         double somma = 0;
-        for (int i = 0; i < key.length; i++) {
-            if (!nonPresente(key[i], minDistances)) {//Controllo se il valore fa parte di quelli che mi interessano
+        for (int i = 0; i < key.size(); i++) {
+            if (!nonPresente(key.get(i), minDistances)) {//Controllo se il valore fa parte di quelli che mi interessano
                 counter++;                    //In tal caso aumento il contatore e aggiungo alla somma
                 somma += target.get(i);
             }
