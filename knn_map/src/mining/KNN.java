@@ -27,7 +27,7 @@ public class KNN {
 
     /**
      * Predice il valore target dell’esempio passato come parametro ( fare uso di avgClosest )
-     * @param e Dati su cui effettuare la previsione
+     * @param e Dat i su cui effettuare la previsione
      * @param k Accuratezza del knn da applicare
      * @return Ritorna il valore calcolato
      * @throws ExampleSizeException è lanciata quando si prova
