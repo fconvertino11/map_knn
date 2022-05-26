@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Scanner;
 /**
  * Classe che si occupa della gestione e delle operazioni sui dati.
@@ -55,7 +56,7 @@ public class Data {
         final int explanatorySetSize = Integer.parseInt(s[1]);  //la seconda parola sarà il numero di attributi
         if (explanatorySetSize < 0) //se il numero è negativo lancio un'eccezione, deve essere maggiore di zero
             throw new TrainingDataException("Errore critico:Questo data set prevede un numero negativo di attributi");
-        explanatorySet = new ArrayList<>(explanatorySetSize);
+        explanatorySet = new ArrayList<>();
         if(explanatorySetSize==0)   //se il numero è zero lancio un eccezione, il dataset non può essere vuoto
             throw new TrainingDataException("Errore critico:Questo data set non prevede alcun attributo");
 
@@ -147,14 +148,14 @@ public class Data {
      * @return punto di separazione
      * @throws ExampleSizeException lanciata dallo swap
      */
-    private int partition(double[] key, int inf, int sup)throws ExampleSizeException {
+    private int partition(ArrayList<Double> key, int inf, int sup)throws ExampleSizeException {
         int i, j;
 
         i = inf;
         j = sup;
         int med = (inf + sup) / 2;
 
-        double x = key[med];
+        double x = key.get(med);
 
         data.get(inf).swap(data.get(med));
 
@@ -162,18 +163,18 @@ public class Data {
         target.set(inf, target.get(med));
         target.set(med, temp);
 
-        temp = key[inf];
-        key[inf] = key[med];
-        key[med] = temp;
+        temp = key.get(inf);
+        key.set(inf, key.get(med));
+        key.set(med, temp);
 
         while (true) {
 
-            while (i <= sup && key[i] <= x) {
+            while (i <= sup && key.get(i) <= x) {
                 i++;
 
             }
 
-            while (key[j] > x) {
+            while (key.get(j) > x) {
                 j--;
             }
 
@@ -183,9 +184,9 @@ public class Data {
                 target.set(i, target.get(j));
                 target.set(j, temp);
 
-                temp = key[i];
-                key[i] = key[j];
-                key[j] = temp;
+                temp = key.get(i);
+                key.set(i, key.get(j));
+                key.set(j, temp);
 
             } else
                 break;
@@ -196,9 +197,9 @@ public class Data {
         target.set(inf, target.get(j));
         target.set(j, temp);
 
-        temp = key[inf];
-        key[inf] = key[j];
-        key[j] = temp;
+        temp = key.get(inf);
+        key.set(inf, key.get(j));
+        key.set(j, temp);
 
         return j;
 
@@ -212,7 +213,7 @@ public class Data {
      * @param sup posizione finale
      * @throws ExampleSizeException lanciata dallo swap() di example
      */
-    private void quicksort(double[] key, int inf, int sup) throws ExampleSizeException{
+    private void quicksort(ArrayList<Double> key, int inf, int sup) throws ExampleSizeException{
 
         if (sup >= inf) {
 
@@ -241,30 +242,40 @@ public class Data {
      */
     public double avgClosest(Example e, int k) throws ExampleSizeException, TrainingDataException {
         double value;
-        double[] key = new double[numberOfExamples];
+        ArrayList<Double> key = new ArrayList<>();
+
         for (int i = 0; i < numberOfExamples; i++) {    //(1) Avvaloro key[]
-            key[i] = e.distance(data.get(i));
+            key.add(i, e.distance(data.get(i)));
         }
-        quicksort(key, 0, key.length - 1);    //(2) ordino key[], data[] e target[] in accordo con key[]
+        quicksort(key, 0, key.size() - 1);    //(2) ordino key[], data[] e target[] in accordo con key[]
         double[] minDistances = new double[k];
-        inizializzaValoriNegativi(minDistances);    //Ci metto -1 in ogni posizione per inizializzare i valori
-        for (int i = 0; i < numberOfExamples; i++) {
-            if (nonPresente(key[i], minDistances)) {
-                inserisciDistanza(key[i], minDistances);//se key[i] non è presente provo ad inserirlo
+        inizializzaValoriNegativi(minDistances);
+        //Ci metto -1 in ogni posizione per inizializzare i valori
+        Iterator<Double> keyIter= key.iterator();   //Creo un Iterator<Double> collegato a key
+        while (keyIter.hasNext()) {
+            Double valoreDaInserire= keyIter.next();
+            //Leggo il prossimo elemento e lo salvo in una variabile temporanea
+            //(posso leggerlo solo una volta ma lo uso due volte)
+            if (nonPresente(valoreDaInserire, minDistances)) {
+                inserisciDistanza(valoreDaInserire, minDistances);//se key[i] non è presente provo a inserirlo
             }
             //Identifico le k distanze minori
         }
         int counter = 0;//inizializzo a zero il contatore e la somma
         double somma = 0;
-        for (int i = 0; i < key.length; i++) {
-            if (!nonPresente(key[i], minDistances)) {//Controllo se il valore fa parte di quelli che mi interessano
+        keyIter= key.iterator(); //Azzero l'iterator
+        Iterator<Double> targetIter= target.iterator(); //ne creo un altro per ciclare attraverso target
+        Double targetTmp;
+        while (keyIter.hasNext()) {
+            targetTmp= targetIter.next();
+            if (!nonPresente(keyIter.next(), minDistances)) {//Controllo se il valore fa parte di quelli che mi interessano
                 counter++;                    //In tal caso aumento il contatore e aggiungo alla somma
-                somma += target.get(i);
+                somma += targetTmp;
             }
         }
         if (counter <= 0)
             throw new TrainingDataException("Per qualche ragione sono stati individuati 0 elementi validi");                       //Se il contatore vale zero o meno vuol dire che c'è stato qualche errore/manomissione
-            value = somma / counter;            //calcolo il valore medio
+        value = somma / counter;            //calcolo il valore medio
         return value;
     }
     /**
@@ -292,7 +303,7 @@ public class Data {
     /**
      * Prova a inserire un elemento (value) in un array ordinato(crescente) se c'è posto
      * @param value Valore da provare a inserire in array
-     * @param array Array in cui provare ad inserire la distanza
+     * @param array Array in cui provare a inserire la distanza
      */
     void inserisciDistanza(double value, double[] array) {
         boolean trovato = false;

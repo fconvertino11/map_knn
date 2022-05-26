@@ -10,7 +10,7 @@ public class MainTest {
 
 	/**
 	 * Classe main in cui effettuare il testing
-	 * @param args Eventuali argomenti che il metodo prende in input
+	 * @param args Eventuali argomenti che il metodo prende in ingresso
 	 **/
 	public static void main(String[] args){
 		try {
