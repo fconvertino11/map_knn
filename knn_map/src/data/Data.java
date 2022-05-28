@@ -51,7 +51,7 @@ public class Data {
 
         // popolare explanatory Set
         boolean targetPresente = false;     //Controllo eccezioni
-        boolean trovatoDiscreto = false;    //Controllo eccezioni
+        boolean trovatoNonTarget = false;    //Controllo eccezioni
         int attributiTrovati = 0;           //Controllo eccezioni
         final int explanatorySetSize = Integer.parseInt(s[1]);  //la seconda parola sarà il numero di attributi
         if (explanatorySetSize < 0) //se il numero è negativo lancio un'eccezione, deve essere maggiore di zero
@@ -67,11 +67,20 @@ public class Data {
             s = line.split(" ");    //leggo il tipo di attributo (@desc/@target)
             if (s[0].equals("@desc")) {   // aggiungo l'attributo allo spazio descrittivo
                 // @desc motor discrete
-                trovatoDiscreto = true; //Gestione eccezioni
+                trovatoNonTarget = true; //Gestione eccezioni
                 attributiTrovati++;     //Gestione eccezioni
                 if(attributiTrovati > explanatorySetSize)
                     throw new TrainingDataException("Errore critico:Questo data set descrive più attributi di quanti ne siano previsti");
-                explanatorySet.add(new DiscreteAttribute(s[1], iAttribute));    //Aggiungo l'attributo all'explanatory set
+                if(s[2].equals("discrete")) {
+                    explanatorySet.add(new DiscreteAttribute(s[1], iAttribute));    //Aggiungo l'attributo all'explanatory set
+                } else {
+                    if(s[2].equals("continuous"))
+                        explanatorySet.add(new ContinuousAttribute(s[1], iAttribute));
+                    else {
+                        throw new TrainingDataException("L'attributo numero " + (iAttribute+1) + " è di tipo non valido");
+                    }
+                }
+
             } else if (s[0].equals("@target")) {
                 targetPresente = true;  //Gestione eccezioni
                 classAttribute = new ContinuousAttribute(s[1], iAttribute);
@@ -82,8 +91,8 @@ public class Data {
 
         }
         if(!targetPresente)
-            throw new TrainingDataException("Errore critico:Non è presente un attributo target");
-        if(!trovatoDiscreto && true)//TODO sostituire true con trovatoContinuo (da inserire)
+            throw new TrainingDataException("Errore critico:Non è presente l'attributo target");
+        if(!trovatoNonTarget)
             throw new TrainingDataException("Errore critico:Non è presente alcun attributo oltre l'attributo target");
         if(attributiTrovati<getExpSetSize())
             throw new TrainingDataException("Errore critico:Questo data set descrive meno attributi di quanti ne siano previsti");
