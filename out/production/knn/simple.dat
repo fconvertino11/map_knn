@@ -1,6 +1,6 @@
 @schema 2
-@desc X
-@desc Y
+@desc X discrete
+@desc Y discrete
 @target class
 @data 15
 A,A,1
