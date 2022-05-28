@@ -252,7 +252,6 @@ public class Data {
     public double avgClosest(Example e, int k) throws ExampleSizeException, TrainingDataException {
         double value;
         ArrayList<Double> key = new ArrayList<>();
-
         for (int i = 0; i < numberOfExamples; i++) {    //(1) Avvaloro key[]
             key.add(i, e.distance(data.get(i)));
         }
@@ -272,6 +271,7 @@ public class Data {
         }
         int counter = 0;//inizializzo a zero il contatore e la somma
         double somma = 0;
+
         keyIter= key.iterator(); //Azzero l'iterator
         Iterator<Double> targetIter= target.iterator(); //ne creo un altro per ciclare attraverso target
         Double targetTmp;
