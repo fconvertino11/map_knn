@@ -57,7 +57,7 @@ public class Data {
         if (explanatorySetSize < 0) //se il numero è negativo lancio un'eccezione, deve essere maggiore di zero
             throw new TrainingDataException("Errore critico:Questo data set prevede un numero negativo di attributi");
         explanatorySet = new ArrayList<>();
-        if(explanatorySetSize==0)   //se il numero è zero lancio un eccezione, il dataset non può essere vuoto
+        if(explanatorySetSize == 0)   //se il numero è zero lancio un eccezione, il dataset non può essere vuoto
             throw new TrainingDataException("Errore critico:Questo data set non prevede alcun attributo");
 
         //Leggo i tipi di attributi
