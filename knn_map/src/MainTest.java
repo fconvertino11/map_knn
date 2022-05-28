@@ -4,7 +4,6 @@ import mining.KNN;
 import java.io.FileNotFoundException;
 
 public class MainTest {
-
 	/**
 	 * Classe main in cui effettuare il testing
 	 * @param args Eventuali argomenti che il metodo prende in ingresso
@@ -12,8 +11,8 @@ public class MainTest {
 	public static void main(String[] args) {
 		try {
 			Data trainingSet= new Data("knn_map/src/simple.dat");
-			
 			KNN knn=new KNN(trainingSet);
+
 			Example e=new Example(0);
 			e.add("A",0);
 			e.add("B",1);
