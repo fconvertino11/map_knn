@@ -17,19 +17,19 @@ public class MainTest {
 			e.add("A",0);
 			e.add("B",1);
 
-			try{System.out.println("Prediction with K=1:"+knn.predict(e, 1));
+			try{System.out.println("Prediction with K=1-> "+knn.predict(e, 1));
 			} 
 			catch (ExampleSizeException exc) {System.out.println(exc.getMessage());		}
 
-			try{System.out.println("Prediction with K=2:"+knn.predict(e, 2));
+			try{System.out.println("Prediction with K=2-> "+knn.predict(e, 2));
 			} 
 			catch (ExampleSizeException exc) {System.out.println(exc.getMessage());		}
 
-			try{System.out.println("Prediction with K=3:"+knn.predict(e, 3));
+			try{System.out.println("Prediction with K=3-> "+knn.predict(e, 3));
 			} 
 			catch (ExampleSizeException exc) {System.out.println(exc.getMessage());		}
 
-			try{System.out.println("Prediction with K=4:"+knn.predict(e, 4));
+			try{System.out.println("Prediction with K=4-> "+knn.predict(e, 4));
 			} 
 			catch (ExampleSizeException exc) {System.out.println(exc.getMessage());		}
 
@@ -38,14 +38,13 @@ public class MainTest {
 			e.add("A",0);
 			e.add("B",1);
 
-			System.out.println("Prediction with K=1:" + knn.predict(e, 2));
 			// read example withKeyboard
 			try{
-				System.out.println("Custom prediction:" + knn.predict());
+				System.out.println("Custom prediction-> " + knn.predict());
 			}
 			catch (ExampleSizeException exc) {System.out.println(exc.getMessage());		}
 		}
-		catch(TrainingDataException | ExampleSizeException exc){
+		catch(TrainingDataException exc){
 			System.out.println(exc.getMessage());
 		}
 		catch(FileNotFoundException f){
