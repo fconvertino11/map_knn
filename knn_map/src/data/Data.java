@@ -261,7 +261,7 @@ public class Data {
         //Ci metto -1 in ogni posizione per inizializzare i valori
         Iterator<Double> keyIter= key.iterator();   //Creo un Iterator<Double> collegato a key
         while (keyIter.hasNext()) {
-            Double valoreDaInserire= keyIter.next();
+            Double valoreDaInserire = keyIter.next();
             //Leggo il prossimo elemento e lo salvo in una variabile temporanea
             //(posso leggerlo solo una volta ma lo uso due volte)
             if (nonPresente(valoreDaInserire, minDistances)) {
